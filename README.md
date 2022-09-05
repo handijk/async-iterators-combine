@@ -97,7 +97,7 @@ for await (const output of combination2) {
 }
 ```
 
-`combineLatest` yields combined values from all async iterators every time on of the async iterators yields.
+`combineLatest` yields combined values from all async iterators every time one of the async iterators yields.
 It will start yielding when all async iterators have yielded at least one value and will stop yielding when all async iterators are done.
 To change the default behavior and start yielding as soon as the first async iterator has yielded pass `{ eager: true }` to the options as the second argument, to stop yielding as soon as the first async iterator is done pass `{ lazy: true }` to the options as the second argument.
 

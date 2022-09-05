@@ -155,6 +155,28 @@ describe('race', () => {
       ],
       { combine: true }
     );
+    expect(await combination.next()).toEqual({ done: false, value: [5, 2] });
+    expect(await combination.next()).toEqual({ done: false, value: [4, 2] });
+    expect(await combination.next()).toEqual({ done: false, value: [4, 1] });
+    expect(await combination.next()).toEqual({ done: false, value: [3, 1] });
+    expect(await combination.next()).toEqual({ done: false, value: [2, 1] });
+    expect(await combination.next()).toEqual({ done: false, value: [2, 0] });
+    expect(await combination.next()).toEqual({ done: false, value: [1, 0] });
+    expect(await combination.next()).toEqual({ done: false, value: [0, 0] });
+    expect(await combination.next()).toEqual({
+      done: true,
+      value: ['final', 'final'],
+    });
+  });
+
+  test('race two async iterables, combine the output and start as soon as the first async iterator yields', async () => {
+    const combination = race(
+      [
+        createAsyncIterable({ i: 6, delay: 50 }),
+        createAsyncIterable({ i: 3, delay: 70 }),
+      ],
+      { combine: true, eager: true }
+    );
     expect(await combination.next()).toEqual({
       done: false,
       value: [5, undefined],
@@ -181,10 +203,6 @@ describe('race', () => {
       ],
       { combine: true, lazy: true }
     );
-    expect(await combination.next()).toEqual({
-      done: false,
-      value: [5, undefined],
-    });
     expect(await combination.next()).toEqual({ done: false, value: [5, 2] });
     expect(await combination.next()).toEqual({ done: false, value: [4, 2] });
     expect(await combination.next()).toEqual({ done: false, value: [4, 1] });

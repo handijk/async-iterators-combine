@@ -1,6 +1,6 @@
 export async function* race(
   iterable,
-  { combine = false, lazy = false, eager = true } = {}
+  { combine = false, lazy = false, eager = false } = {}
 ) {
   const nextPromises = [];
   const promiseMap = new WeakMap();

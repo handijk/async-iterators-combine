@@ -1,6 +1,6 @@
 {
   "name": "async-iterators-combine",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Combine async iterators into a Generator object (iterator and iterable)",
   "main": "src/index.js",
   "type": "module",
