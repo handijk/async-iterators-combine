@@ -1,5 +1,5 @@
 {
-  "name": "combine-async-iterators",
+  "name": "async-iterators-combine",
   "version": "1.0.0",
   "description": "Combine async iterators into a Generator object (iterator and iterable)",
   "main": "src/index.js",
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/handijk/combine-async-iterators.git"
+    "url": "git+https://github.com/handijk/async-iterators-combine.git"
   },
   "keywords": [
     "iterator",
@@ -28,9 +28,9 @@
   "author": "Han Dijk <info@handijk.nl>",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/handijk/combine-async-iterators/issues"
+    "url": "https://github.com/handijk/async-iterators-combine/issues"
   },
-  "homepage": "https://github.com/handijk/combine-async-iterators#readme",
+  "homepage": "https://github.com/handijk/async-iterators-combine#readme",
   "devDependencies": {
     "@babel/eslint-parser": "^7.18.9",
     "eslint": "^8.21.0",

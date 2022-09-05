@@ -1,4 +1,4 @@
-# combine-async-iterators
+# async-iterators-combine
 
 Combine async iterators into a Generator object (iterator and iterable).
 
@@ -8,7 +8,7 @@ Combine async iterators into a Generator object (iterator and iterable).
 ## Installation
 
 ```
-npm i combine-async-iterators
+npm i async-iterators-combine
 ```
 
 ## Usage
@@ -17,7 +17,7 @@ npm i combine-async-iterators
 To change the default behavior and stop when as soon as the first async iterator is done pass `{ lazy: true }` as the second argument.
 
 ```js
-import { all } from 'combine-async-iterators';
+import { all } from 'async-iterators-combine';
 
 async function* generator1() {
   yield 1;
@@ -50,7 +50,7 @@ for await (const output of combination2) {
 To change the default behavior and stop when as soon as the first async iterator is done pass `{ lazy: true }` as the second argument.
 
 ```js
-import { race } from 'combine-async-iterators';
+import { race } from 'async-iterators-combine';
 
 async function* generator1() {
   await new Promise((resolve) => {
@@ -102,7 +102,7 @@ It will start yielding when all async iterators have yielded at least one value.
 To change the default behavior and start yielding as soon as the first async iterator has yielded pass `{ eager: true }` to the options as the second argument.
 
 ```js
-import { race } from 'combine-async-iterators';
+import { race } from 'async-iterators-combine';
 
 async function* generator1() {
   await new Promise((resolve) => {
