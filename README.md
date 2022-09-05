@@ -97,12 +97,12 @@ for await (const output of combination2) {
 }
 ```
 
-`race` can also yield combined values from all async iterators by passing `{ combine: true }` to the options as the second argument.
-It will start yielding when all async iterators have yielded at least one value.
-To change the default behavior and start yielding as soon as the first async iterator has yielded pass `{ eager: true }` to the options as the second argument.
+`combineLatest` yields combined values from all async iterators every time on of the async iterators yields.
+It will start yielding when all async iterators have yielded at least one value and will stop yielding when all async iterators are done.
+To change the default behavior and start yielding as soon as the first async iterator has yielded pass `{ eager: true }` to the options as the second argument, to stop yielding as soon as the first async iterator is done pass `{ lazy: true }` to the options as the second argument.
 
 ```js
-import { race } from 'async-iterators-combine';
+import { combineLatest } from 'async-iterators-combine';
 
 async function* generator1() {
   await new Promise((resolve) => {
@@ -134,16 +134,13 @@ async function* generator2() {
   yield 'c';
 }
 
-const combination = race([ generator1, generator2 ], {
-   combine: true
-})
+const combination = combineLatest([ generator1, generator2 ]);
 
 for await (const output of combination) {
   console.log(output); // -> [1, 'a'], [1, 'b'], [1, 'c'], [2, 'c'], [3, 'c']
 }
 
-const combination2 = race([ generator1, generator2 ], {
-   combine: true,
+const combination2 = combineLatest([ generator1, generator2 ], {
    eager: true,
 })
 
