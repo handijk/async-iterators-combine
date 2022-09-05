@@ -94,8 +94,11 @@ describe('race', () => {
 
     const combination = race([asyncIterable1, asyncIterable2]);
     expect(await combination.next()).toEqual({ done: false, value: 5 });
+    expect(await combination.next()).toEqual({ done: false, value: 2 });
     expect(await combination.next()).toEqual({ done: false, value: 4 });
+    expect(await combination.next()).toEqual({ done: false, value: 1 });
     expect(await combination.next()).toEqual({ done: false, value: 3 });
+    expect(await combination.next()).toEqual({ done: false, value: 0 });
     await (async () => {
       await expect(combination.next()).rejects.toThrow('Error thrown at 2');
     })();

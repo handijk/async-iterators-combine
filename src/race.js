@@ -12,7 +12,7 @@ export async function* race(
       result: { value, done },
     }));
     promiseMap.set(promise, asyncIterator);
-    nextPromises[index] = promise;
+    nextPromises.push(promise);
   };
 
   const results = Array.from(iterable, () => undefined);
@@ -26,6 +26,8 @@ export async function* race(
   try {
     while (nextPromises.length) {
       const { index, result, promise } = await Promise.race(nextPromises);
+      promiseMap.delete(promise);
+      nextPromises.splice(nextPromises.indexOf(promise), 1);
       if (result.done) {
         results[index] = result.value;
         if (lazy) {
@@ -35,11 +37,8 @@ export async function* race(
             return result.value;
           }
         }
-        promiseMap.delete(promise);
-        nextPromises.splice(nextPromises.indexOf(promise), 1);
         lastResult = result.value;
       } else {
-        promiseMap.delete(promise);
         setPromise(asyncIterators[index], index);
         intermediateResults[index] = result.value;
         waiting[index] = false;
