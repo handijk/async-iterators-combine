@@ -41,6 +41,29 @@ describe('race', () => {
     });
   });
 
+  test('race two async iterables and also yield the index for the winning iterator', async () => {
+    const combination = race(
+      [
+        createAsyncIterable({ i: 6, delay: 50 }),
+        createAsyncIterable({ i: 3, delay: 70 }),
+      ],
+      { yieldIndex: true }
+    );
+    expect(await combination.next()).toEqual({ done: false, value: [5, 0] });
+    expect(await combination.next()).toEqual({ done: false, value: [2, 1] });
+    expect(await combination.next()).toEqual({ done: false, value: [4, 0] });
+    expect(await combination.next()).toEqual({ done: false, value: [1, 1] });
+    expect(await combination.next()).toEqual({ done: false, value: [3, 0] });
+    expect(await combination.next()).toEqual({ done: false, value: [2, 0] });
+    expect(await combination.next()).toEqual({ done: false, value: [0, 1] });
+    expect(await combination.next()).toEqual({ done: false, value: [1, 0] });
+    expect(await combination.next()).toEqual({ done: false, value: [0, 0] });
+    expect(await combination.next()).toEqual({
+      done: true,
+      value: 'final',
+    });
+  });
+
   test('race two async iterables and loop them', async () => {
     let i = 0;
     const values = [5, 2, 4, 1, 3, 2, 0, 1, 0];

@@ -1,6 +1,6 @@
 export async function* race(
   iterable,
-  { combine = false, lazy = false, eager = false } = {}
+  { combine = false, lazy = false, eager = false, yieldIndex = false } = {}
 ) {
   const nextPromises = [];
   const promiseMap = new WeakMap();
@@ -15,17 +15,27 @@ export async function* race(
     nextPromises.push(promise);
   };
 
+  const yieldValue = (result) => {
+    if (yieldIndex) {
+      return [result, yieldedIndex];
+    } else {
+      return result;
+    }
+  };
+
   const results = Array.from(iterable, () => undefined);
   const intermediateResults = Array.from(iterable, () => undefined);
   const asyncIterators = Array.from(iterable);
   const waiting = Array.from(iterable, () => true);
   let lastResult = undefined;
+  let yieldedIndex;
 
   asyncIterators.forEach(setPromise);
 
   try {
     while (nextPromises.length) {
       const { index, result, promise } = await Promise.race(nextPromises);
+      yieldedIndex = index;
       promiseMap.delete(promise);
       nextPromises.splice(nextPromises.indexOf(promise), 1);
       if (result.done) {
@@ -44,9 +54,9 @@ export async function* race(
         waiting[index] = false;
         if (!combine || eager || waiting.filter(Boolean).length === 0) {
           if (combine) {
-            yield intermediateResults;
+            yield yieldValue(intermediateResults);
           } else {
-            yield result.value;
+            yield yieldValue(result.value);
           }
         }
       }
