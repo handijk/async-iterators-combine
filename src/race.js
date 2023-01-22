@@ -1,4 +1,4 @@
-import { returnUntilDone } from './return-until-done';
+import { returnUntilDone } from './return-until-done.js';
 
 export async function* race(
   iterable,
