@@ -83,9 +83,9 @@ describe('all', () => {
 
     const combination = all([asyncIterable1, asyncIterable2]);
     expect(await combination.next()).toEqual({ done: false, value: [5, 2] });
-    expect(combination.throw(new Error('Error thrown at 2'))).rejects.toThrow(
-      'Error thrown at 2'
-    );
+    await expect(
+      combination.throw(new Error('Error thrown at 2'))
+    ).rejects.toThrow('Error thrown at 2');
     expect(returnSpy1).toBeCalledWith();
     expect(returnSpy2).toBeCalledWith();
   });

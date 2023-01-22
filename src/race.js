@@ -1,3 +1,5 @@
+import { returnUntilDone } from './return-until-done';
+
 export async function* race(
   iterable,
   { combine = false, lazy = false, eager = false, yieldIndex = false } = {}
@@ -65,7 +67,7 @@ export async function* race(
     for (const promise of nextPromises) {
       const asyncIterator = promiseMap.get(promise);
       if (asyncIterator?.return) {
-        asyncIterator.return();
+        await returnUntilDone(asyncIterator);
       }
     }
   }

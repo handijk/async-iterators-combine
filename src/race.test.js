@@ -79,17 +79,21 @@ describe('race', () => {
   });
 
   test('calling return should call return on async iterables', async () => {
-    const asyncIterable1 = createAsyncIterable({ i: 6, delay: 50 });
+    const asyncIterable1 = createAsyncIterable({ i: 6, delay: 70 });
     const asyncIterable2 = createAsyncIterable({ i: 3, delay: 70 });
     const returnSpy1 = jest.spyOn(asyncIterable1, 'return');
     const returnSpy2 = jest.spyOn(asyncIterable2, 'return');
 
-    const combination = race([asyncIterable1, asyncIterable2]);
-    expect(await combination.next()).toEqual({ done: false, value: 5 });
+    const combination = race([asyncIterable1, asyncIterable2], {
+      combine: true,
+    });
+    expect(await combination.next()).toEqual({ done: false, value: [5, 2] });
     expect(await combination.return()).toEqual({
       done: true,
       value: undefined,
     });
+    expect(returnSpy1).toHaveBeenCalledTimes(1);
+    expect(returnSpy2).toHaveBeenCalledTimes(1);
     expect(returnSpy1).toBeCalledWith();
     expect(returnSpy2).toBeCalledWith();
   });
@@ -102,9 +106,9 @@ describe('race', () => {
 
     const combination = race([asyncIterable1, asyncIterable2]);
     expect(await combination.next()).toEqual({ done: false, value: 5 });
-    expect(combination.throw(new Error('Error thrown at 2'))).rejects.toThrow(
-      'Error thrown at 2'
-    );
+    await expect(
+      combination.throw(new Error('Error thrown at 2'))
+    ).rejects.toThrow('Error thrown at 2');
     expect(returnSpy1).toBeCalledWith();
     expect(returnSpy2).toBeCalledWith();
   });

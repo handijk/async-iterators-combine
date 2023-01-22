@@ -1,3 +1,5 @@
+import { returnUntilDone } from './return-until-done.js';
+
 export async function* all(iterable, { lazy = false } = {}) {
   const results = Array.from(iterable, () => undefined);
   const intermediateResults = Array.from(iterable, () => undefined);
@@ -32,7 +34,7 @@ export async function* all(iterable, { lazy = false } = {}) {
   } finally {
     for (const [asyncIterator] of asyncIterators) {
       if (asyncIterator?.return) {
-        asyncIterator.return();
+        await returnUntilDone(asyncIterator);
       }
     }
   }
