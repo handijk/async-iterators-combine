@@ -1,5 +1,2 @@
-import { race } from './race.js';
-export { all } from './all.js';
-export { race };
-export const combineLatest = (iterable, options) =>
-  race(iterable, { ...options, combine: true });
+export { AsyncIteratorsCombine } from './async-iterators-combine.js';
+export { CombineLatest } from './combine-latest.js';
